@@ -103,6 +103,73 @@ The app is organized into three main classes:
 
 ---
 
+---
+
+## Building & Deployment
+
+This repo ships with a Makefile, a Dockerfile, and a GitHub Actions pipeline.
+They cover two different jobs, and it's worth knowing which is which:
+
+| Tool | Job |
+|---|---|
+| **Docker** (`Dockerfile`) | Consistent Linux environment for running the app and smoke-testing it (syntax + dependency imports) locally or in CI. |
+| **GitHub Actions** (`.github/workflows/build.yml`) | Builds the real Windows `.exe` on an actual `windows-latest` runner, and publishes it to a GitHub Release when you push a version tag. |
+
+A `.exe` is Windows machine code — PyInstaller has to run on Windows (or
+under Wine) to produce one. Docker on Linux can't build a genuine `.exe` on
+its own, which is why the CI/CD pipeline — not the Dockerfile — is the
+source of truth for releases.
+
+### Local development
+
+```bash
+make install    # pip install -r requirements.txt
+make run        # launch the app
+make test       # syntax + import sanity check
+```
+
+### Local Docker (dev/test container)
+
+```bash
+make docker-build   # build the image
+make docker-run     # run the GUI in a container via Xvfb
+make docker-test    # just check deps import cleanly
+```
+
+### Building the .exe
+
+**Recommended — let CI build it:** push a tag and GitHub Actions builds and
+releases the `.exe` for you:
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+Once the workflow finishes, the `.exe` is attached to a new GitHub Release
+and also available as a build artifact on the Actions run itself.
+
+**Locally on Windows:**
+
+```bash
+pip install -r requirements.txt pyinstaller
+pyinstaller --clean --noconfirm pdf_editor.spec
+# → dist/PDF_Editor.exe
+```
+
+**Locally on Linux/macOS (experimental):**
+
+```bash
+make build-exe-docker
+```
+
+This cross-builds via Wine in a container. It works for many pure-Python
+apps, but Tkinter apps can occasionally hit Tcl/Tk DLL bundling issues under
+Wine — if it gives you trouble, use the CI pipeline or a real Windows
+machine instead.
+
+---
+
 ## License
 
 This project does not currently include a license file. All rights reserved by the author unless otherwise specified.
