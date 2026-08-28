@@ -4,6 +4,19 @@ A fully functional desktop PDF editor built with Python and Tkinter. Open, annot
 
 ---
 
+## Download
+
+**[⬇ Download the latest Windows .exe](https://github.com/Cele2Ndosi/PDF_Editor/releases/latest)**
+
+No installation or Python required — just download and run `PDF_Editor.exe`.
+
+> **Windows may show a "Windows protected your PC" SmartScreen warning.**
+> This happens because the app isn't yet widely downloaded or code-signed —
+> it's not a sign of malware. To run it: click **More info**, then
+> **Run anyway**.
+
+---
+
 ## Features
 
 - **Open & Save PDFs** — Open any PDF file and save in-place or export as a new file
@@ -30,7 +43,9 @@ A fully functional desktop PDF editor built with Python and Tkinter. Open, annot
 
 ---
 
-## Installation
+## Running from source
+
+Prefer not to run the prebuilt `.exe`, or need it on Linux/macOS? Run it from source instead:
 
 1. **Clone the repository:**
    ```bash
@@ -147,7 +162,9 @@ git push origin v1.0.0
 ```
 
 Once the workflow finishes, the `.exe` is attached to a new GitHub Release
-and also available as a build artifact on the Actions run itself.
+and also available as a build artifact on the Actions run itself. The exe is
+unsigned, so anyone running it will see the SmartScreen warning noted at the
+top of this README — that's expected, not a build problem.
 
 **Locally on Windows:**
 
